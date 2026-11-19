@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Granny Go — Meet your new favorite neighbor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F1E6; --paper-2:#EDE6D2; --forest:#3E5B3F; --forest-2:#4E6E4F;
+    --peach:#E7A576; --peach-dark:#D9822B; --sage:#7C8A73; --sage-dark:#5C6E54;
+    --ink:#3A2E22; --ink-soft:#6B6350; --line:rgba(58,46,34,0.1);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:'Quicksand',sans-serif; font-weight:500;}
+  h1,h2,h3,h4{font-family:'Baloo 2',sans-serif; font-weight:700; margin:0;}
+  .wrap{max-width:1160px; margin:0 auto; padding:0 24px;}
+  a{text-decoration:none; color:inherit;}
+  section{padding:88px 0;}
+
+  nav{position:sticky; top:0; z-index:50; background:rgba(245,241,230,0.94); backdrop-filter:blur(8px); border-bottom:1px solid var(--line);}
+  .nav-inner{display:flex; align-items:center; justify-content:space-between; padding:16px 24px;}
+  .logo{font-family:'Baloo 2',sans-serif; font-weight:800; font-size:22px; color:var(--forest); display:flex; align-items:center; gap:8px;}
+  .logo .dot{width:10px; height:10px; border-radius:50%; background:var(--peach-dark);}
+  .nav-links{display:flex; gap:28px; font-weight:700; font-size:15px; color:var(--ink-soft);}
+  .nav-links a:hover{color:var(--forest);}
+
+  .btn{display:inline-flex; align-items:center; gap:8px; padding:14px 26px; border-radius:999px; font-weight:800; font-size:15px; border:none; cursor:pointer; transition:transform .15s ease, box-shadow .15s ease;}
+  .btn:hover{transform:translateY(-2px) scale(1.02);}
+  .btn-peach{background:var(--peach-dark); color:#fff; box-shadow:0 8px 18px rgba(217,130,43,0.35);}
+  .btn-forest{background:var(--forest); color:#fff; box-shadow:0 8px 18px rgba(62,91,63,0.3);}
+  .btn-small{padding:10px 18px; font-size:13.5px;}
+
+  .hero{padding:72px 0 56px;}
+  .hero-grid{display:grid; grid-template-columns:1.1fr 0.9fr; gap:48px; align-items:center;}
+  .eyebrow{display:inline-flex; align-items:center; gap:8px; background:rgba(124,138,115,0.16); color:var(--forest); font-weight:700; font-size:13.5px; padding:8px 16px; border-radius:999px; margin-bottom:20px;}
+  .hero h1{font-size:56px; line-height:1.06; margin-bottom:20px;}
+  .hero h1 em{font-style:normal; color:var(--peach-dark);}
+  .lead{font-size:18px; color:var(--ink-soft); line-height:1.6; max-width:480px; margin-bottom:30px;}
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:26px;}
+  .trust{display:flex; gap:20px; flex-wrap:wrap; font-size:13.5px; font-weight:700; color:var(--ink-soft);}
+  .trust span::before{content:"✓ "; color:var(--sage-dark);}
+
+  .cluster{position:relative; height:420px;}
+  .blob{position:absolute; background:#fff; padding:10px; border-radius:32px; box-shadow:0 16px 30px rgba(58,46,34,0.14);}
+  .blob img{width:100%; height:100%; object-fit:cover; border-radius:24px; display:block;}
+  .b1{top:0; left:8%; width:210px; height:210px; z-index:2;}
+  .b2{top:40px; left:50%; width:170px; height:170px; z-index:3;}
+  .b3{top:260px; left:2%; width:160px; height:150px; z-index:1;}
+  .b4{top:250px; left:56%; width:180px; height:160px; z-index:2;}
+  .deco{position:absolute; border-radius:50%; opacity:.5;}
+  .d1{width:120px; height:120px; background:var(--peach); top:-20px; right:0;}
+  .d2{width:90px; height:90px; background:var(--sage); bottom:20px; left:20%;}
+
+  .tag{display:inline-block; font-size:13px; font-weight:800; color:var(--forest); background:rgba(62,91,63,0.12); padding:7px 16px; border-radius:999px; margin-bottom:16px;}
+  .head{max-width:620px; margin-bottom:48px;}
+  .head h2{font-size:38px; margin-bottom:12px;}
+  .head p{font-size:16.5px; color:var(--ink-soft); line-height:1.6;}
+
+  .band{background:var(--forest); color:#F3F1E4;}
+  .band .head p{color:#CFDACB;}
+  .band .tag{background:rgba(231,165,118,0.2); color:var(--peach);}
+  .doors{display:grid; grid-template-columns:1fr 1fr; gap:26px;}
+  .door{border-radius:28px; padding:36px 32px;}
+  .door-f{background:linear-gradient(160deg,#4E6E4F,#3E5B3F);}
+  .door-y{background:linear-gradient(160deg,#E7A576,#D9822B);}
+  .door h3{font-size:25px; color:#fff; margin-bottom:20px;}
+  .step{display:flex; gap:14px; margin-bottom:18px;}
+  .num{width:32px; height:32px; border-radius:50%; background:rgba(255,255,255,0.22); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; flex-shrink:0;}
+  .txt{color:rgba(255,255,255,0.95); font-size:14.5px; line-height:1.55; padding-top:5px;}
+  .txt b{display:block; font-family:'Baloo 2',sans-serif; font-size:16px; color:#fff; margin-bottom:2px;}
+
+  .cards{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
+  .pcard{background:#fff; border-radius:26px; padding:18px; box-shadow:0 8px 22px rgba(58,46,34,0.08); transition:transform .2s ease;}
+  .pcard:hover{transform:translateY(-5px);}
+  .pcard img{width:100%; aspect-ratio:1; object-fit:cover; border-radius:20px; margin-bottom:14px;}
+  .pcard h4{font-size:18px; color:var(--forest); margin-bottom:2px;}
+  .pcard .meta{font-size:12px; font-weight:700; color:var(--ink-soft); margin-bottom:10px;}
+  .chips{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px;}
+  .chip{font-size:11px; font-weight:700; background:var(--paper-2); color:var(--sage-dark); padding:5px 11px; border-radius:999px;}
+  .pcard p{font-size:13px; color:var(--ink-soft); line-height:1.5; margin:0;}
+  .sample-note{font-size:12.5px; color:var(--ink-soft); margin-top:18px; font-weight:600;}
+
+  .ideas{background:var(--paper-2);}
+  .idea-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  .idea{background:#fff; border-radius:26px; overflow:hidden; box-shadow:0 8px 22px rgba(58,46,34,0.1); transition:transform .2s ease;}
+  .idea:hover{transform:translateY(-5px);}
+  .idea .img{position:relative; aspect-ratio:4/3;}
+  .idea img{width:100%; height:100%; object-fit:cover; display:block;}
+  .idea .cat{position:absolute; top:14px; left:14px; background:rgba(255,255,255,0.94); font-size:10.5px; font-weight:800; color:var(--forest); padding:5px 12px; border-radius:999px;}
+  .idea .body{padding:18px 20px 20px;}
+  .idea h4{font-size:18px; margin-bottom:10px;}
+  .idea .meta{display:flex; justify-content:space-between; font-size:13px; font-weight:700; color:var(--ink-soft); padding-top:12px; border-top:1px dashed var(--line);}
+  .idea .price{color:var(--peach-dark);}
+
+  .prices{display:grid; grid-template-columns:1fr 1fr; gap:24px;}
+  .price{background:#fff; border-radius:28px; padding:34px; border:2px solid var(--paper-2);}
+  .price.feat{background:var(--forest); color:#fff; border:none;}
+  .price .tg{font-weight:800; font-size:13px; color:var(--peach-dark); text-transform:uppercase; letter-spacing:.04em;}
+  .price.feat .tg{color:var(--peach);}
+  .amt{font-family:'Baloo 2',sans-serif; font-size:44px; font-weight:700; margin:10px 0 6px;}
+  .price ul{list-style:none; padding:0; margin:18px 0 0;}
+  .price li{padding:10px 0; border-top:1px solid var(--paper-2); font-size:14.5px; font-weight:600;}
+  .price.feat li{border-top:1px solid rgba(255,255,255,0.16);}
+  .fine{font-size:13px; color:var(--ink-soft); margin-top:22px; line-height:1.6; font-weight:600;}
+
+  .waitlist{background:linear-gradient(150deg,var(--peach) 0%,#E0955C 55%,var(--sage) 130%); border-radius:36px; padding:64px 48px; color:var(--forest);}
+  .waitlist h2{font-size:36px; margin-bottom:12px; max-width:520px;}
+  .waitlist p{font-size:16px; max-width:460px; opacity:.9; margin-bottom:26px; font-weight:600;}
+  .role{display:flex; gap:18px; margin-bottom:20px; font-size:14px; font-weight:700; flex-wrap:wrap;}
+  .role label{display:flex; align-items:center; gap:6px; cursor:pointer;}
+  .form-row{display:flex; gap:10px; max-width:500px; flex-wrap:wrap;}
+  .form-row input{flex:1; min-width:220px; padding:15px 20px; border-radius:999px; border:none; font-size:15px; font-family:'Quicksand',sans-serif; font-weight:600;}
+  .consent{font-size:12.5px; margin-top:14px; font-weight:600; max-width:500px; line-height:1.5;}
+  .consent input{margin-right:6px;}
+
+  footer{background:var(--forest); color:#CFDACB; padding:56px 0 32px;}
+  .faq{border-top:1px solid rgba(255,255,255,0.14); padding:18px 0;}
+  .faq summary{cursor:pointer; list-style:none; font-family:'Baloo 2',sans-serif; font-weight:700; font-size:16px; color:#F3F1E4; display:flex; justify-content:space-between;}
+  .faq summary::-webkit-details-marker{display:none;}
+  .faq summary::after{content:'+'; color:var(--peach); font-size:20px;}
+  .faq[open] summary::after{content:'–';}
+  .faq p{font-size:14px; line-height:1.6; margin:12px 0 0; color:#CFDACB; font-weight:500;}
+  .foot{display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-top:44px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.14); font-size:13px; color:#B5C4B0;}
+
+  [data-reveal]{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
+  [data-reveal].show{opacity:1; transform:translateY(0);}
+
+  @media(max-width:900px){
+    .hero-grid{grid-template-columns:1fr;} .cluster{height:320px;}
+    .doors,.prices{grid-template-columns:1fr;} .cards{grid-template-columns:repeat(2,1fr);}
+    .idea-grid{grid-template-columns:1fr;} .hero h1{font-size:40px;} .nav-links{display:none;}
+    .waitlist{padding:40px 24px;} .head h2{font-size:30px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner wrap" style="padding-left:0;padding-right:0;">
+    <div class="logo"><span class="dot"></span>Granny Go</div>
+    <div class="nav-links">
+      <a href="#how">How it works</a><a href="#neighbors">Meet the Pals</a><a href="#ideas">Hangout Ideas</a><a href="#pricing">Pricing</a>
+    </div>
+    <a href="#waitlist" data-join class="btn btn-peach btn-small">Join the waitlist</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">🏡 Coming soon to Toronto families &amp; students</span>
+      <h1>Meet your new<br>favorite <em>neighbor.</em></h1>
+      <p class="lead">Granny Go connects Toronto seniors with warm, background-checked students for friendly visits, walks, tech help and afternoon tea, from people right in your community.</p>
+      <div class="cta-row">
+        <a href="#waitlist" data-join class="btn btn-peach">I need a companion</a>
+        <a href="#waitlist" data-join class="btn btn-forest">I want to be a Neighbor</a>
+      </div>
+      <div class="trust"><span>Screened Neighbors</span><span>Flexible scheduling</span><span>From $28/hr</span></div>
+    </div>
+    <div class="cluster" data-reveal>
+      <div class="deco d1"></div><div class="deco d2"></div>
+      <div class="blob b1"><img src="https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=300&h=300&fit=crop" alt=""></div>
+      <div class="blob b2"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=260&h=260&fit=crop" alt=""></div>
+      <div class="blob b3"><img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=240&h=200&fit=crop" alt=""></div>
+      <div class="blob b4"><img src="https://images.unsplash.com/photo-1516726817505-f5ed825624d8?w=260&h=200&fit=crop" alt=""></div>
+    </div>
+  </div>
+</header>
+
+<section id="how" class="band">
+  <div class="wrap">
+    <div class="head" data-reveal>
+      <span class="tag">How it works</span>
+      <h2>Two doors. One neighborhood.</h2>
+      <p>Granny Go works both ways: families come looking for company, and students come ready to offer it.</p>
+    </div>
+    <div class="doors" data-reveal>
+      <div class="door door-f">
+        <h3>Find your Neighbor</h3>
+        <div class="step"><div class="num">1</div><div class="txt"><b>Tell us about your neighborhood friend</b>Interests, language and personality, the things that make a good match.</div></div>
+        <div class="step"><div class="num">2</div><div class="txt"><b>We match you with a great Neighbor</b>Browse verified student profiles, or let us suggest one nearby.</div></div>
+        <div class="step"><div class="num">3</div><div class="txt"><b>Enjoy real visits, on your schedule</b>One-off visits at $28/hr, or go regular with The Connect Plan.</div></div>
+      </div>
+      <div class="door door-y">
+        <h3>Become a Neighbor</h3>
+        <div class="step"><div class="num">1</div><div class="txt"><b>Apply and get verified</b>A quick application, ID check and a Canadian background check.</div></div>
+        <div class="step"><div class="num">2</div><div class="txt"><b>Build your profile</b>Share your languages and hobbies. You set your own hourly rate.</div></div>
+        <div class="step"><div class="num">3</div><div class="txt"><b>Get booked, or pitch your own idea</b>Accept visit requests, or post a Hangout Idea for seniors to discover.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="neighbors">
+  <div class="wrap">
+    <div class="head" data-reveal>
+      <span class="tag">Meet the Pals</span>
+      <h2>Real students, real neighborhoods.</h2>
+      <p>Every Neighbor is background-checked and interviewed before they are matched with a family.</p>
+    </div>
+    <div class="cards" data-reveal>
+      <div class="pcard">
+        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&h=300&fit=crop" alt="">
+        <h4>Priya S.</h4><div class="meta">UofT · Social Work</div>
+        <div class="chips"><span class="chip">Hindi</span><span class="chip">Punjabi</span><span class="chip">Tech help</span></div>
+        <p>"I love hearing stories from a different generation."</p>
+      </div>
+      <div class="pcard">
+        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop" alt="">
+        <h4>Marco D.</h4><div class="meta">TMU · Recreation</div>
+        <div class="chips"><span class="chip">Italian</span><span class="chip">Board games</span></div>
+        <p>"Give me a deck of cards and an afternoon."</p>
+      </div>
+      <div class="pcard">
+        <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=300&h=300&fit=crop" alt="">
+        <h4>Wei L.</h4><div class="meta">York · Gerontology</div>
+        <div class="chips"><span class="chip">Cantonese</span><span class="chip">Mandarin</span></div>
+        <p>"Video-calling grandkids shouldn't be complicated."</p>
+      </div>
+      <div class="pcard">
+        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&h=300&fit=crop" alt="">
+        <h4>Sofia R.</h4><div class="meta">Seneca · ECE</div>
+        <div class="chips"><span class="chip">Portuguese</span><span class="chip">Music</span></div>
+        <p>"I bring my ukulele on visits. Great icebreaker."</p>
+      </div>
+    </div>
+    <p class="sample-note">Sample profiles for illustration. Replace with real, consenting Neighbors before launch.</p>
+  </div>
+</section>
+
+<section id="ideas" class="ideas">
+  <div class="wrap">
+    <div class="head" data-reveal>
+      <span class="tag">Pitched by our Neighbors</span>
+      <h2>Popular Hangout Ideas</h2>
+      <p>Students pitch these themselves: real activities, priced and ready to book.</p>
+    </div>
+    <div class="idea-grid" data-reveal>
+      <div class="idea">
+        <div class="img"><img src="https://images.unsplash.com/photo-1507041957456-9c397ce39c97?w=400&h=300&fit=crop" alt=""><span class="cat">Outdoors</span></div>
+        <div class="body"><h4>High Park Autumn Walk</h4><div class="meta"><span>with Marco D.</span><span class="price">$28/hr</span></div></div>
+      </div>
+      <div class="idea">
+        <div class="img"><img src="https://images.unsplash.com/photo-1592194996308-7b43878e84a6?w=400&h=300&fit=crop" alt=""><span class="cat">Tech help</span></div>
+        <div class="body"><h4>Smartphone Photo Lessons</h4><div class="meta"><span>with Priya S.</span><span class="price">$30/hr</span></div></div>
+      </div>
+      <div class="idea">
+        <div class="img"><img src="https://images.unsplash.com/photo-1529543544282-ea669407fca3?w=400&h=300&fit=crop" alt=""><span class="cat">At home</span></div>
+        <div class="body"><h4>Afternoon Tea &amp; Board Games</h4><div class="meta"><span>with Sofia R.</span><span class="price">$28/hr</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="head" data-reveal>
+      <span class="tag">Pricing</span>
+      <h2>Simple, honest pricing.</h2>
+      <p>No hidden fees and no confusing tiers. Just fair pay for real company.</p>
+    </div>
+    <div class="prices" data-reveal>
+      <div class="price">
+        <span class="tg">Pay as you go</span>
+        <div class="amt">$28<span style="font-size:16px;color:var(--ink-soft);">/hr</span></div>
+        <p style="color:var(--ink-soft);font-size:14px;margin:0;">Book a visit whenever you need one.</p>
+        <ul><li>✓ One-off or occasional visits</li><li>✓ Browse Neighbors and Hangout Ideas</li><li>✓ Cancel anytime, no commitment</li></ul>
+      </div>
+      <div class="price feat">
+        <span class="tg">Most popular</span>
+        <div class="amt">$280<span style="font-size:16px;opacity:.7;">/mo</span></div>
+        <p style="color:#CFDACB;font-size:14px;margin:0;">The Connect Plan: regular visits, same familiar face.</p>
+        <ul><li>✓ Weekly recurring visits</li><li>✓ Priority matching with your favorite Neighbor</li><li>✓ Best value for ongoing companionship</li></ul>
+      </div>
+    </div>
+    <p class="fine">Visits are non-medical companionship and social activities only. Granny Go does not provide personal care, medication support or physical lifting.</p>
+  </div>
+</section>
+
+<section id="waitlist" style="padding-top:20px;">
+  <div class="wrap">
+    <div class="waitlist" data-reveal>
+      <span style="font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.04em;">🌱 Toronto only, for now</span>
+      <h2 style="margin-top:12px;">Be first in your neighborhood.</h2>
+      <p>We are launching in North York, Midtown and Markham first. Join the waitlist and we will tell you as soon as we are live near you.</p>
+      <div class="form-row">
+        <a href="#" data-join class="btn btn-forest">Join the waitlist (takes 30 seconds)</a>
+      </div>
+      <p class="consent">The sign-up form asks for your name, email and a consent tick. We only use your details to tell you when Granny Go launches near you. You can unsubscribe at any time.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <details class="faq" open>
+      <summary>Is this medical care or a personal support worker service?</summary>
+      <p>No. Granny Go is non-medical companionship: visits, activities and tech help. We do not provide medication support, personal care or clinical services.</p>
+    </details>
+    <details class="faq">
+      <summary>How are Neighbors screened?</summary>
+      <p>Every Neighbor will complete identity verification, a Canadian criminal record check, a Vulnerable Sector Check and a personal screening interview before they are matched with a family.</p>
+    </details>
+    <details class="faq">
+      <summary>What does it cost?</summary>
+      <p>$28 per hour for pay-as-you-go visits, or $280 per month for The Connect Plan if you would like regular weekly visits with the same Neighbor.</p>
+    </details>
+    <div class="foot">
+      <div class="logo" style="color:#F3F1E4;"><span class="dot"></span>Granny Go</div>
+      <div>© 2026 Granny Go · Toronto, Canada · Working name, subject to trademark clearance</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ONE PLACE TO EDIT: paste your free Google Form link here (see the setup guide).
+  const WAITLIST_URL = "https://docs.google.com/forms/d/e/1FAIpQLSdcfeWulGWT2blAb49YkptHM2d30llkRvQbmgEB6VPdchwlXA/viewform?usp=dialog";
+  document.querySelectorAll('[data-join]').forEach(a => {
+    a.href = WAITLIST_URL;
+    if (WAITLIST_URL.indexOf('PASTE_') === 0) a.title = 'Waitlist form coming soon';
+  });
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+  }, {threshold: 0.15});
+  document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
